@@ -7,12 +7,12 @@ namespace MoneySource.Presentation.WebAPI.Controllers
 {
     public class SourceController : BaseApiController
     {
-        //[HttpGet]
-        //public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
-        //{
-        //    var result = await Mediator.Send(request);
-        //    return Ok(result);
-        //}
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
+        {
+            var result = await Mediator.Send(request);
+            return Ok(result);
+        }
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateSource([FromBody] PostSourceCommand.Request request)
@@ -21,13 +21,12 @@ namespace MoneySource.Presentation.WebAPI.Controllers
             return Ok(result);
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetById(Guid id)
-        //{
-        //    var source = await _context.Sources.Where(a => a.Id == id).FirstOrDefaultAsync();
-        //    if (source == null) return NotFound();
-        //    return Ok(source);
-        //}
+        [HttpGet("{Id:Guid}")]
+        public async Task<IActionResult> GetSourceById([FromRoute] GetSourceByIdQuery.Request request)
+        {
+            var result = await Mediator.Send(request);
+            return Ok(result);
+        }
 
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> Delete(Guid id)
