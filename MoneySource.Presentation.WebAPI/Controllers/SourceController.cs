@@ -7,12 +7,12 @@ namespace MoneySource.Presentation.WebAPI.Controllers
 {
     public class SourceController : BaseApiController
     {
-        [HttpGet]
-        public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
-        {
-            var result = await Mediator.Send(request);
-            return Ok(result);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
+        //{
+        //    var result = await Mediator.Send(request);
+        //    return Ok(result);
+        //}
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateSource([FromBody] PostSourceCommand.Request request)
