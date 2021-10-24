@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneySource.Core.Application.Features.SourceFeatures.Commands;
 using MoneySource.Core.Application.Features.SourceFeatures.Queries;
+using System;
 using System.Threading.Tasks;
 
 namespace MoneySource.Presentation.WebAPI.Controllers
@@ -36,18 +37,13 @@ namespace MoneySource.Presentation.WebAPI.Controllers
             return Ok(result);
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(Guid id, Source sourceUpdate)
-        //{
-        //    var source = _context.Sources.Where(a => a.Id == id).FirstOrDefault();
-        //    if (source == null) return NotFound();
-        //    else
-        //    {
-        //        source.Name = sourceUpdate.Name;
-        //        source.CreationDate = sourceUpdate.CreationDate;
-        //        await _context.SaveAsync();
-        //        return Ok(source.Id);
-        //    }
-        //}
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] PutSourceCommand.Request request)
+        {
+            request.Id = id;
+
+            var result = await Mediator.Send(request);
+            return Ok(result);
+        }
     }
 }
