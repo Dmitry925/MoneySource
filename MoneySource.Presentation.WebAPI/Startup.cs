@@ -39,6 +39,7 @@ namespace MoneySource.Presentation.WebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
+                c.CustomSchemaIds(type => type.ToString());
                 c.IncludeXmlComments(string.Format(@"{0}\MoneySource.xml", System.AppDomain.CurrentDomain.BaseDirectory));
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MoneySource", Version = "v1" });
             });

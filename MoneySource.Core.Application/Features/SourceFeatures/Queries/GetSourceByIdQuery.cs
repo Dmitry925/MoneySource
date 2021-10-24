@@ -41,7 +41,7 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
                 }
 
                 var sourceMapped = _mapper.Map<Response>(source);
-                return new Response();
+                return sourceMapped;
             }
         }
 
