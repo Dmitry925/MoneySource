@@ -17,6 +17,7 @@ namespace MoneySource.Core.Application.Profiles
             CreateMap<Source, GetAllSourcesQuery.SourceDTO>();
             CreateMap<Source, GetSourceByIdQuery.Response>();
             CreateMap<PostSourceCommand.Request, Source>();
+            CreateMap<PutSourceCommand.Request, Source>();
         }
     }
 }
