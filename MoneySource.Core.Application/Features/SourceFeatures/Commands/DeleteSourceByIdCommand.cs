@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneySource.Core.Application.Infrastructure.Exceptions;
 using MoneySource.Core.Application.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,14 @@ using System.Threading.Tasks;
 
 namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
 {
-    public class DeleteSourceByIdCommand : IRequest<Guid>
+    public class DeleteSourceByIdCommand
     {
-        public Guid Id { get; set; }
+        public class Request : IRequest<Response>
+        {
+            public Guid Id { get; set; }
+        }
 
-        public class DeleteSourceByIdCommandHandler : IRequestHandler<DeleteSourceByIdCommand, Guid>
+        public class DeleteSourceByIdCommandHandler : IRequestHandler<Request, Response>
         {
             private readonly IApplicationDbContext _context;
             public DeleteSourceByIdCommandHandler(IApplicationDbContext context)
@@ -22,14 +26,30 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
                 _context = context;
             }
 
-            public async Task<Guid> Handle(DeleteSourceByIdCommand command, CancellationToken cancellationToken)
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var source = await _context.Sources.Where(a => a.Id == command.Id).FirstOrDefaultAsync();
-                if (source == null) return default;
+                var source = await _context.Sources.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.Id);
+
+                if (source == null)
+                {
+                    throw new NotFoundException(nameof(source));
+                }
+
+                var name = source.Name;
+
                 _context.Sources.Remove(source);
                 await _context.SaveAsync();
-                return source.Id;
+
+                return new Response
+                {
+                    Result = $"Source {name} has been deleted."
+                };
             }
+        }
+
+        public class Response
+        {
+            public string Result { get; set; }
         }
     }
 }

@@ -7,15 +7,16 @@ namespace MoneySource.Presentation.WebAPI.Controllers
 {
     public class SourceController : BaseApiController
     {
-        [HttpGet("get")]
-        public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSource([FromBody] PostSourceCommand.Request request)
         {
             var result = await Mediator.Send(request);
             return Ok(result);
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateSource([FromBody] PostSourceCommand.Request request)
+        [HttpGet]
+        public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
         {
             var result = await Mediator.Send(request);
             return Ok(result);
@@ -28,15 +29,12 @@ namespace MoneySource.Presentation.WebAPI.Controllers
             return Ok(result);
         }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    var source = await _context.Sources.Where(a => a.Id == id).FirstOrDefaultAsync();
-        //    if (source == null) return NotFound();
-        //    _context.Sources.Remove(source);
-        //    await _context.SaveAsync();
-        //    return Ok(source.Id);
-        //}
+        [HttpDelete("{Id:Guid}")]
+        public async Task<IActionResult> DeleteSourceById([FromRoute] DeleteSourceByIdCommand.Request request)
+        {
+            var result = await Mediator.Send(request);
+            return Ok(result);
+        }
 
         //[HttpPut("{id}")]
         //public async Task<IActionResult> Update(Guid id, Source sourceUpdate)
