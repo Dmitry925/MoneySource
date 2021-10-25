@@ -9,40 +9,41 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
+namespace MoneySource.Core.Application.Features.TransactionFeatures.Commands
 {
-    public class DeleteSourceByIdCommand
+    public class DeleteTransactionCommand
     {
         public class Request : IRequest<Response>
         {
             public Guid Id { get; set; }
         }
 
-        public class DeleteSourceByIdCommandHandler : IRequestHandler<Request, Response>
+        public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IApplicationDbContext _context;
-            public DeleteSourceByIdCommandHandler(IApplicationDbContext context)
+
+            public Handler(IApplicationDbContext context)
             {
                 _context = context;
             }
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var source = await _context.Sources.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.Id);
+                var transaction = await _context.Transactions.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.Id);
 
-                if (source == null)
+                if(transaction == null)
                 {
-                    throw new NotFoundException(nameof(source));
+                    throw new NotFoundException(nameof(transaction));
                 }
 
-                var name = source.Name;
+                var name = transaction.Name;
 
-                _context.Sources.Remove(source);
+                _context.Transactions.Remove(transaction);
                 await _context.SaveAsync();
 
                 return new Response
                 {
-                    Result = $"Source {name} has been deleted."
+                    Result = $"Transaction {name} has been deleted."
                 };
             }
         }

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MoneySource.Core.Application.Infrastructure.Exceptions;
 using MoneySource.Core.Application.Interfaces;
-using MoneySource.Core.Domain.Models;
+using MoneySource.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
+namespace MoneySource.Core.Application.Features.TransactionFeatures.Queries
 {
-    public class GetSourceByIdQuery
+    public class GetAllTransactionsQuery
     {
         public class Request : IRequest<Response>
         {
-            public Guid Id { get; set; }
+            public string Something { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -33,24 +33,28 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var source = await _context.Sources.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.Id);
-
-                if (source == null)
+                var transactions = await _context.Transactions.AsNoTracking().ProjectTo<TransactionDto>(_mapper.ConfigurationProvider).ToListAsync();
+                return new Response
                 {
-                    throw new NotFoundException(nameof(source));
-                }
-
-                var sourceMapped = _mapper.Map<Response>(source);
-                return sourceMapped;
+                    Transactions = transactions
+                };
             }
         }
 
         public class Response
         {
+            public List<TransactionDto> Transactions { get; set; }
+        }
+
+        public class TransactionDto
+        {
             public Guid Id { get; set; }
-
             public string Name { get; set; }
-
+            public TransactionType Type { get; set; }
+            public double Amount { get; set; }
+            public bool IsCompleted { get; set; }
+            public DateTimeOffset ComplitionDate { get; set; }
+            public string SourceName { get; set; }
             public DateTimeOffset CreationDate { get; set; }
         }
     }

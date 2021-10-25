@@ -16,16 +16,30 @@ namespace MoneySource.Infrastructure.Persistence.Context
         { 
         }
 
-        public ApplicationDbContext()
-        {
-        }
-
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Source> Sources { get; set; }
 
-        public async Task<int> SaveAsync()
+        public Task<int> SaveAsync()
         {
-            return await base.SaveChangesAsync();
+            return base.SaveChangesAsync();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
         }
     }
 }

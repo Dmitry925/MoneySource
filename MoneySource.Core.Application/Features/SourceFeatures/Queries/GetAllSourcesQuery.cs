@@ -18,12 +18,12 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
         {
 
         }
-        public class GetAllSourcesQueryHandler : IRequestHandler<Request, Response>
+        public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IApplicationDbContext _context;
             private readonly IMapper _mapper;
 
-            public GetAllSourcesQueryHandler(IApplicationDbContext context, IMapper mapper)
+            public Handler(IApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
                 _mapper = mapper;
@@ -31,11 +31,13 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var sources = await _context.Sources.AsNoTracking().ToListAsync();
+                var sourceList = _mapper.Map<List<SourceDto>>(await _context.Sources.AsNoTracking().ToListAsync());
 
-                var sourceList = _mapper.Map<List<SourceDTO>>(sources);
+                if (sourceList == null)
+                {
+                    return null;
+                }
 
-                if (sourceList == null) return null;
                 return new Response
                 {
                     Sources = sourceList
@@ -45,10 +47,10 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
 
         public class Response
         {
-            public List<SourceDTO> Sources { get; set; }
+            public List<SourceDto> Sources { get; set; }
         }
 
-        public class SourceDTO
+        public class SourceDto
         {
             public Guid Id { get; set; }
 

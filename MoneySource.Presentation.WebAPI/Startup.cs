@@ -36,12 +36,15 @@ namespace MoneySource.Presentation.WebAPI
             services.AddAplication();
             services.AddPersistence(Configuration);
 
-            services.AddControllers();
+            services.AddCors();
+
+            services.AddControllers();/*.AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);*/
             services.AddSwaggerGen(c =>
             {
                 c.CustomSchemaIds(type => type.ToString());
                 c.IncludeXmlComments(string.Format(@"{0}\MoneySource.xml", System.AppDomain.CurrentDomain.BaseDirectory));
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MoneySource", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MoneySourceAPI", Version = "v1" });
             });
         }
 
@@ -54,9 +57,11 @@ namespace MoneySource.Presentation.WebAPI
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoneySource"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoneySourceAPI"));
 
             app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 
             app.UseAuthorization();
 

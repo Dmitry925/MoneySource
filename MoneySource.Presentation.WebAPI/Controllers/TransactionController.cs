@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MoneySource.Core.Application.Features.TransactionFeatures.Commands;
+using MoneySource.Core.Application.Features.TransactionFeatures.Queries;
 using MoneySource.Core.Application.Interfaces;
 using MoneySource.Core.Domain.Models;
 using System;
@@ -10,68 +12,39 @@ using System.Threading.Tasks;
 
 namespace MoneySource.Presentation.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TransactionController : ControllerBase
+    public class TransactionController : BaseApiController
     {
-        private IApplicationDbContext _context;
-
-        public TransactionController(IApplicationDbContext context)
-        {
-            _context = context;
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Transaction transaction)
+        public async Task<IActionResult> CreateTransaction([FromBody] CreateTransactionCommand.Request request)
         {
-            _context.Transactions.Add(transaction);
-            await _context.SaveAsync();
-            return Ok(transaction.Id);
+            return Ok(await SendAsync(request));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllTransactions([FromQuery] GetAllTransactionsQuery.Request request)
         {
-            var transaction = await _context.Transactions.ToListAsync();
-            if (transaction == null) return NotFound();
-            return Ok(transaction);
+            return Ok(await SendAsync(request));
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetTransactionByIdQuery.Request request)
         {
-            var transaction = await _context.Transactions.Where(a => a.Id == id).FirstOrDefaultAsync();
-            if (transaction == null) return NotFound();
-            return Ok(transaction);
+            return Ok(await SendAsync(request));
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        [HttpDelete("{Id:Guid}")]
+        public async Task<IActionResult> DeleteTransaction([FromRoute] DeleteTransactionCommand.Request request)
         {
-            var transaction = await _context.Transactions.Where(a => a.Id == id).FirstOrDefaultAsync();
-            if (transaction == null) return NotFound();
-            _context.Transactions.Remove(transaction);
-            await _context.SaveAsync();
-            return Ok(transaction.Id);
+            return Ok(await SendAsync(request));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, Transaction transactionUpdate)
+        [HttpPut("{id:Guid}")]
+        public async Task<IActionResult> UpdateTransaction([FromRoute] Guid id, [FromBody] UpdateTransactionCommand.Request request)
         {
-            var transaction = _context.Transactions.Where(a => a.Id == id).FirstOrDefault();
-            if (transaction == null) return NotFound();
-            else
-            {
-                transaction.Name = transactionUpdate.Name;
-                transaction.CreationDate = transactionUpdate.CreationDate;
-                transaction.Type = transactionUpdate.Type;
-                transaction.Amount = transactionUpdate.Amount;
-                transaction.IsCompleted = transactionUpdate.IsCompleted;
-                transaction.ComplitionDate = transactionUpdate.ComplitionDate;
-                transaction.SourceId = transactionUpdate.SourceId;
-                await _context.SaveAsync();
-                return Ok(transaction.Id);
-            }
+            request.Id = id;
+
+            return Ok(await SendAsync(request));
         }
     }
 }

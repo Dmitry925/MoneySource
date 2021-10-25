@@ -14,10 +14,13 @@ namespace MoneySource.Core.Application.Profiles
     {
         public SourceProfile()
         {
-            CreateMap<Source, GetAllSourcesQuery.SourceDTO>();
+            CreateMap<Source, GetAllSourcesQuery.SourceDto>();
+
             CreateMap<Source, GetSourceByIdQuery.Response>();
-            CreateMap<PostSourceCommand.Request, Source>();
-            CreateMap<PutSourceCommand.Request, Source>();
+            
+            CreateMap<CreateSourceCommand.Request, Source>();
+            
+            CreateMap<UpdateSourceCommand.Request, Source>();
         }
     }
 }

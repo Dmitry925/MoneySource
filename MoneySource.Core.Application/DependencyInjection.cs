@@ -11,6 +11,7 @@ namespace MoneySource.Core.Application
         public static void AddAplication(this IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddAutoMapper(cfg => cfg.AddCollectionMappers(), typeof(SourceProfile));
         }
     }
