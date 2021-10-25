@@ -25,9 +25,6 @@ namespace MoneySource.Core.Application.Features.TransactionFeatures.Commands
             public bool IsCompleted { get; set; }
 
             public Guid SourceId { get; set; }
-
-            //[JsonIgnore]
-            //public Source Source { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -49,8 +46,6 @@ namespace MoneySource.Core.Application.Features.TransactionFeatures.Commands
                 }
 
                 var transaction = _mapper.Map<Transaction>(request);
-
-                //transaction.Source = await _context.Sources.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.SourceId);
 
                 transaction.Id = Guid.NewGuid();
                 transaction.CreationDate = DateTimeOffset.UtcNow;

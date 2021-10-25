@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
+using MoneySource.Core.Application.Infrastructure;
 using MoneySource.Core.Application.Interfaces;
 using MoneySource.Core.Domain.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +15,20 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
         public class Request : IRequest<Response>
         {
             public string Name { get; set; }
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(a => a.Name)
+                    .MinimumLength(Constants.MIN_NAME_LENGTH)
+                    .WithMessage($"Name length must be more than {Constants.MIN_NAME_LENGTH} characters");
+
+                RuleFor(a => a.Name)
+                    .MaximumLength(Constants.MAX_NAME_LENGTH)
+                    .WithMessage($"Name length must be less than {Constants.MAX_NAME_LENGTH} characters");
+            }
         }
 
         public class Handler : IRequestHandler<Request, Response>
