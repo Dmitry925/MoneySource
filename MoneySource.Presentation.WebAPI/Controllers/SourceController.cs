@@ -10,40 +10,35 @@ namespace MoneySource.Presentation.WebAPI.Controllers
     {
 
         [HttpPost]
-        public async Task<IActionResult> CreateSource([FromBody] PostSourceCommand.Request request)
+        public async Task<IActionResult> CreateSource([FromBody] CreateSourceCommand.Request request)
         {
-            var result = await Mediator.Send(request);
-            return Ok(result);
+            return Ok(await SendAsync(request));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllSources([FromQuery] GetAllSourcesQuery.Request request)
         {
-            var result = await Mediator.Send(request);
-            return Ok(result);
+            return Ok(await SendAsync(request));
         }
 
         [HttpGet("{Id:Guid}")]
         public async Task<IActionResult> GetSourceById([FromRoute] GetSourceByIdQuery.Request request)
         {
-            var result = await Mediator.Send(request);
-            return Ok(result);
+            return Ok(await SendAsync(request));
         }
 
         [HttpDelete("{Id:Guid}")]
-        public async Task<IActionResult> DeleteSourceById([FromRoute] DeleteSourceByIdCommand.Request request)
+        public async Task<IActionResult> DeleteSource([FromRoute] DeleteSourceCommand.Request request)
         {
-            var result = await Mediator.Send(request);
-            return Ok(result);
+            return Ok(await SendAsync(request));
         }
 
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] PutSourceCommand.Request request)
+        public async Task<IActionResult> UpdateSource([FromRoute] Guid id, [FromBody] UpdateSourceCommand.Request request)
         {
             request.Id = id;
 
-            var result = await Mediator.Send(request);
-            return Ok(result);
+            return Ok(await SendAsync(request));
         }
     }
 }

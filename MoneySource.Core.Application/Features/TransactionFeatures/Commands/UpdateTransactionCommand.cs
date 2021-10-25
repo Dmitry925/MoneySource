@@ -3,21 +3,35 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MoneySource.Core.Application.Infrastructure.Exceptions;
 using MoneySource.Core.Application.Interfaces;
-using MoneySource.Core.Domain.Models;
+using MoneySource.Core.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
+namespace MoneySource.Core.Application.Features.TransactionFeatures.Commands
 {
-    public class GetSourceByIdQuery
+    public class UpdateTransactionCommand
     {
         public class Request : IRequest<Response>
         {
+            [JsonIgnore]
             public Guid Id { get; set; }
+
+            public string Name { get; set; }
+
+            public TransactionType Type { get; set; }
+
+            public double Amount { get; set; }
+
+            public bool IsCompleted { get; set; }
+
+            public DateTimeOffset ComplitionDate { get; set; }
+
+            public Guid SourceId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -33,25 +47,26 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Queries
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var source = await _context.Sources.AsNoTracking().FirstOrDefaultAsync(a => a.Id == request.Id);
+                var transaction = await _context.Transactions.Where(a => a.Id == request.Id).FirstOrDefaultAsync();
 
-                if (source == null)
+                if(transaction == null)
                 {
-                    throw new NotFoundException(nameof(source));
+                    throw new NotFoundException(nameof(transaction));
                 }
 
-                var sourceMapped = _mapper.Map<Response>(source);
-                return sourceMapped;
+                _mapper.Map(request, transaction);
+                await _context.SaveAsync();
+
+                return new Response
+                {
+                    Id = transaction.Id
+                };
             }
         }
 
         public class Response
         {
             public Guid Id { get; set; }
-
-            public string Name { get; set; }
-
-            public DateTimeOffset CreationDate { get; set; }
         }
     }
 }
