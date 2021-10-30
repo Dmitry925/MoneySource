@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MoneySource.Core.Application.Infrastructure.Exceptions;
+using MoneySource.Core.Domain.Models;
 using MoneySource.Infrastructure.Persistence.Context;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MoneySource.Presentation.WebAPI
@@ -22,6 +21,8 @@ namespace MoneySource.Presentation.WebAPI
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+                var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
                 var context = services.GetService<ApplicationDbContext>();
 
                 if (context == null)
@@ -29,6 +30,19 @@ namespace MoneySource.Presentation.WebAPI
                     throw new NotFoundException("Context");
                 }
                 await context.Database.MigrateAsync();
+
+                try
+                {
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+
+                    await ApplicationDbContextSeed.SeedEssentialsAsync(roleManager, userManager);
+                }
+                catch(Exception ex)
+                {
+                    var logger = loggerFactory.CreateLogger<Program>();
+                    logger.LogError(ex, "An error occurred seeding the DB.");
+                }
             }
 
             await host.RunAsync();

@@ -18,6 +18,10 @@ namespace MoneySource.Infrastructure.Persistence.Configuration
             builder.HasOne(x => x.Source)
                 .WithMany(x => x.Transactions)
                 .HasForeignKey(x => x.SourceId);
+
+            builder.HasOne(x => x.User)
+                .WithMany(x => x.Transactions)
+                .HasForeignKey(x => x.UserId);
         }
     }
 }

@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MoneySource.Infrastructure"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MoneySource.Presentation", "MoneySource.Presentation", "{D8290F5C-8398-4296-AF3C-51D53C1040D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneySource.Presentation.WebAPI", "MoneySource.Presentation.WebAPI\MoneySource.Presentation.WebAPI.csproj", "{56C7D0CD-3E8E-42AA-A40E-9FF889217513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneySource.Presentation.WebAPI", "MoneySource.Presentation.WebAPI\MoneySource.Presentation.WebAPI.csproj", "{56C7D0CD-3E8E-42AA-A40E-9FF889217513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneySource.Core.Domain", "MoneySource.Core.Domain\MoneySource.Core.Domain.csproj", "{F60CB9EF-2710-4B44-AD16-A76E62DBCB74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneySource.Core.Domain", "MoneySource.Core.Domain\MoneySource.Core.Domain.csproj", "{F60CB9EF-2710-4B44-AD16-A76E62DBCB74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneySource.Core.Application", "MoneySource.Core.Application\MoneySource.Core.Application.csproj", "{3FE12B1D-7D68-4FC0-99AB-8421A37896DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneySource.Core.Application", "MoneySource.Core.Application\MoneySource.Core.Application.csproj", "{3FE12B1D-7D68-4FC0-99AB-8421A37896DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneySource.Infrastructure.Persistence", "MoneySource.Infrastructure.Persistence\MoneySource.Infrastructure.Persistence.csproj", "{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneySource.Infrastructure.Persistence", "MoneySource.Infrastructure.Persistence\MoneySource.Infrastructure.Persistence.csproj", "{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneySource.Infrastructure.Service", "MoneySource.Infrastructure.Service\MoneySource.Infrastructure.Service.csproj", "{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{F60CB9EF-2710-4B44-AD16-A76E62DBCB74} = {C45548F6-DAA2-4965-BB09-DB1DAAFF8B5D}
 		{3FE12B1D-7D68-4FC0-99AB-8421A37896DA} = {C45548F6-DAA2-4965-BB09-DB1DAAFF8B5D}
 		{21E4ADC3-72D7-47CB-9C7D-91CB8FB4A671} = {5AC0666D-1616-4B4F-A039-CAE8C1883464}
+		{AF5A2BC3-5896-4AA8-AA0F-6E34940BE08A} = {5AC0666D-1616-4B4F-A039-CAE8C1883464}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B5EB5F1-3A08-4527-96AF-D03E9E9441D3}
