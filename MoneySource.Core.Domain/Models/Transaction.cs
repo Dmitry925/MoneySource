@@ -20,5 +20,8 @@ namespace MoneySource.Core.Domain.Models
 
         public Guid SourceId { get; set; }
         public Source Source { get; set; }
+
+        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }
