@@ -31,12 +31,12 @@ namespace MoneySource.Infrastructure.Persistence.Context
                 }
             }
 
-            if (!userManager.Users.Any())
+            var d = DemoUsers.DemoUsersList;
+            foreach (var demoUsers in d)
             {
-                var d = DemoUsers.DemoUsersList;
-                foreach (var demoUsers in d)
+                foreach (var user in demoUsers.Value)
                 {
-                    foreach (var user in demoUsers.Value)
+                    if (!userManager.Users.Any(x => x.UserName == user.UserName))
                     {
                         var createdUser = await userManager.CreateAsync(user, DemoUsers.DefaultPassword);
                         if (createdUser.Succeeded)
@@ -44,7 +44,6 @@ namespace MoneySource.Infrastructure.Persistence.Context
                             await userManager.AddToRoleAsync(user, demoUsers.Key.ToString());
                         }
                     }
-
                 }
             }
         }

@@ -40,6 +40,10 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Commands
                 {
                     throw new ValidationException($"User with Email {request.Email} already exists!");
                 }
+                if (_userManager.Users.Any(x => x.UserName == request.UserName))
+                {
+                    throw new ValidationException($"User with UserName {request.UserName} already exists!");
+                }
 
                 var user = _mapper.Map<User>(request);
                 user.Id = Guid.NewGuid();
@@ -51,7 +55,7 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Commands
                 }
                 else
                 {
-                    throw new ValidationException(string.Join("\n", createdUser.Errors.Select(x => "Code " + x.Code + " Description" + x.Description)));
+                    throw new ValidationException(string.Join("\n", createdUser.Errors.Select(x => "Code: " + x.Code + " Description: " + x.Description)));
                 }
 
                 return new Response

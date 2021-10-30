@@ -17,14 +17,6 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Queries
         {
 
         }
-
-        public class Validator : AbstractValidator<Request>
-        {
-            public Validator()
-            {
-
-            }
-        }
         
         public class Handler : IRequestHandler<Request, Response>
         {
