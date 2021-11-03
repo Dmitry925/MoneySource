@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MoneySource.Core.Application.Infrastructure;
 using MoneySource.Core.Application.Infrastructure.Exceptions;
 using MoneySource.Core.Application.Interfaces;
 using System;
@@ -22,7 +24,15 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
             public string Name { get; set; }
         }
 
-        public string Name { get; set; }
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(v => v.Name)
+                    .Length(Constants.MIN_NAME_LENGTH, Constants.MAX_NAME_LENGTH)
+                    .WithMessage($"Name length must be between {Constants.MIN_NAME_LENGTH} and {Constants.MAX_NAME_LENGTH}");
+            }
+        }
 
         public class Handler : IRequestHandler<Request, Response>
         {

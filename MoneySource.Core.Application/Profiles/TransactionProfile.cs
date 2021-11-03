@@ -17,10 +17,12 @@ namespace MoneySource.Core.Application.Profiles
             CreateMap<CreateTransactionCommand.Request, Transaction>();
 
             CreateMap<Transaction, GetAllTransactionsQuery.TransactionDto>()
-                .ForMember(dest => dest.SourceName, src => src.MapFrom(x => x.Source.Name));
+                .ForMember(dest => dest.SourceName, src => src.MapFrom(x => x.Source.Name))
+                .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.User.UserName));
 
             CreateMap<Transaction, GetTransactionByIdQuery.Response>();
             CreateMap<Source, GetTransactionByIdQuery.SourceDto>();
+            CreateMap<User, GetTransactionByIdQuery.UserDto>();
 
             CreateMap<UpdateTransactionCommand.Request, Transaction>();
 
