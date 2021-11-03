@@ -21,13 +21,9 @@ namespace MoneySource.Core.Application.Features.SourceFeatures.Commands
         {
             public Validator()
             {
-                RuleFor(a => a.Name)
-                    .MinimumLength(Constants.MIN_NAME_LENGTH)
-                    .WithMessage($"Name length must be more than {Constants.MIN_NAME_LENGTH} characters");
-
-                RuleFor(a => a.Name)
-                    .MaximumLength(Constants.MAX_NAME_LENGTH)
-                    .WithMessage($"Name length must be less than {Constants.MAX_NAME_LENGTH} characters");
+                RuleFor(v => v.Name)
+                    .Length(Constants.MIN_NAME_LENGTH, Constants.MAX_NAME_LENGTH)
+                    .WithMessage($"Name length must be between {Constants.MIN_NAME_LENGTH} and {Constants.MAX_NAME_LENGTH}");
             }
         }
 

@@ -35,7 +35,7 @@ namespace MoneySource.Core.Application.Features.TransactionFeatures.Queries
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var transaction = await _context.Transactions.Include(a => a.Source).AsNoTracking().ProjectTo<Response>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(a => a.Id == request.Id);
+                var transaction = await _context.Transactions.AsNoTracking().ProjectTo<Response>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(a => a.Id == request.Id);
 
                 if(transaction == null)
                 {
@@ -49,28 +49,26 @@ namespace MoneySource.Core.Application.Features.TransactionFeatures.Queries
         public class Response
         {
             public Guid Id { get; set; }
-
             public string Name { get; set; }
-
             public TransactionType Type { get; set; }
-
             public double Amount { get; set; }
-
             public bool IsCompleted { get; set; }
-
             public DateTimeOffset ComplitionDate { get; set; }
-
             public SourceDto Source { get; set; }
-
+            public UserDto User { get; set; }
             public DateTimeOffset CreationDate { get; set; }
-
         }
 
         public class SourceDto
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
-            public DateTimeOffset CreationDate { get; set; }
+        }
+
+        public class UserDto
+        {
+            public Guid Id { get; set; }
+            public string UserName { get; set; }
         }
     }
 }

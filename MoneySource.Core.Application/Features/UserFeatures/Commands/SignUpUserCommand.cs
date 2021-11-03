@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using MoneySource.Core.Domain.Enums;
@@ -21,6 +22,31 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Commands
             public string Password { get; set; }
             public string UserName { get; set; }
             public BaseRole Role { get; set; }
+        }
+
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(v => v.Email)
+                    .NotNull()
+                    .NotEmpty()
+                    .WithMessage("Email mustn't be empty or null!");
+
+                RuleFor(v => v.Email)
+                    .EmailAddress(EmailValidationMode.Net4xRegex)
+                    .WithMessage("Invalid email format!");
+
+                RuleFor(v => v.Password)
+                    .NotNull()
+                    .NotEmpty()
+                    .WithMessage("Password mustn't be empty or null!");
+
+                RuleFor(v => v.UserName)
+                    .NotNull()
+                    .NotEmpty()
+                    .WithMessage("UserName mustn't be empty!");
+            }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -55,7 +81,7 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Commands
                 }
                 else
                 {
-                    throw new ValidationException(string.Join("\n", createdUser.Errors.Select(x => "Code: " + x.Code + " Description: " + x.Description)));
+                    throw new ValidationException(string.Join("\n", createdUser.Errors.Select(x => "\nCode: " + x.Code + "\nDescription: " + x.Description)));
                 }
 
                 return new Response

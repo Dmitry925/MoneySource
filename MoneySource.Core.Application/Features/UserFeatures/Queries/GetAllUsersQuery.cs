@@ -15,7 +15,7 @@ namespace MoneySource.Core.Application.Features.UserFeatures.Queries
     {
         public class Request : IRequest<Response>
         {
-
+            
         }
         
         public class Handler : IRequestHandler<Request, Response>

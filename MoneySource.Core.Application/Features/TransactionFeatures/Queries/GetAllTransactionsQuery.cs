@@ -55,6 +55,7 @@ namespace MoneySource.Core.Application.Features.TransactionFeatures.Queries
             public bool IsCompleted { get; set; }
             public DateTimeOffset ComplitionDate { get; set; }
             public string SourceName { get; set; }
+            public string UserName { get; set; }
             public DateTimeOffset CreationDate { get; set; }
         }
     }
